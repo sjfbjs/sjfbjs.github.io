@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sjfbjs.github.io</id>
     <title>蒜蒜的博客</title>
-    <updated>2020-03-23T11:53:25.863Z</updated>
+    <updated>2020-03-23T11:58:43.639Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sjfbjs.github.io"/>
     <link rel="self" href="https://sjfbjs.github.io/atom.xml"/>
@@ -10,4 +10,38 @@
     <logo>https://sjfbjs.github.io/images/avatar.png</logo>
     <icon>https://sjfbjs.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 蒜蒜的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[k3s搭建]]></title>
+        <id>https://sjfbjs.github.io/post/k3s-da-jian/</id>
+        <link href="https://sjfbjs.github.io/post/k3s-da-jian/">
+        </link>
+        <updated>2020-03-23T11:56:55.000Z</updated>
+        <content type="html"><![CDATA[<p>https://blog.niubi.dev/centos-k3s/</p>
+<p>安装新版docker<br>
+curl https://releases.rancher.com/install-docker/19.03.sh | sh</p>
+<p>https://yq.aliyun.com/articles/704089</p>
+<p>install  without   download</p>
+<p>主节点安装<br>
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=&quot;server --no-deploy traefik --docker&quot; INSTALL_K3S_BIN_DIR=&quot;/usr/local/bin&quot; INSTALL_K3S_SKIP_DOWNLOAD=true sh -s -<br>
+k3s保存在本地或者百度云<br>
+百度云地址</p>
+<p>rz   k3s    =&gt;   /usr/local/bin<br>
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=&quot;agent --docker&quot;  K3S_URL=https://MASTER_IP:6443 K3S_TOKEN='MASTER_TOKEN'  INSTALL_K3S_BIN_DIR=&quot;/usr/local/bin&quot; INSTALL_K3S_SKIP_DOWNLOAD=true    sh -s -</p>
+<p>或者</p>
+<p>K3S_URL=https://192.168.0.13:6443 K3S_TOKEN='K101539b824cccca8d7d2b6de8652fca609db6142edf2a623c6d7e89ad5b65d4abb::node:0263a7a5456e46c97ad2b1a7b738fea9'  INSTALL_K3S_BIN_DIR=&quot;/usr/local/bin&quot; INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh</p>
+<p>先打包然后更新rancher镜像<br>
+kubectl set image deployment/$project <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>o</mi><mi>j</mi><mi>e</mi><mi>c</mi><mi>t</mi><mo>=</mo></mrow><annotation encoding="application/x-tex">project=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span></span></span>image:$env   -n $namespace</p>
+<p>标记master不可调度<br>
+kubectl cordon k8s-node1    #将k8s-node1节点设置为不可调度模式<br>
+kubectl drain k8s-node1     #将当前运行在k8s-node1节点上的容器驱离<br>
+kubectl uncordon k8s-node1  #执行完维护后，将节点重新加入调度</p>
+<p>服务端查看密码<br>
+cat /var/lib/rancher/k3s/server/cred/node-passwd<br>
+客户端查看密码<br>
+cat  /var/lib/rancher/k3s/agent/node-password.txt<br>
+这两个文件中的内容客户端和服务端需要一致</p>
+<p>二 . 1.10.2 新版本k3s下载安装<br>
+https://blog.csdn.net/weixin_44267608/article/details/102896032</p>
+]]></content>
+    </entry>
 </feed>
