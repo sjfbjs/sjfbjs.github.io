@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sjfbjs.github.io</id>
     <title>蒜蒜的博客</title>
-    <updated>2021-01-18T07:07:31.073Z</updated>
+    <updated>2021-01-18T07:25:38.411Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sjfbjs.github.io"/>
     <link rel="self" href="https://sjfbjs.github.io/atom.xml"/>
@@ -17,6 +17,7 @@
         </link>
         <updated>2021-01-18T07:04:32.000Z</updated>
         <content type="html"><![CDATA[<p>前言</p>
+<p>结构体的内存地址在使用的过程中是一直不变的 ，可以通过获取 fmt.printf(&quot;地址: %p&quot;,&amp;struct)</p>
 <p>值类型：所有像int、float、bool和string这些类型都属于值类型，使用这些类型的变量直接指向存在内存中的值，值类型的变量的值存储在栈中。当使用等号=将一个变量的值赋给另一个变量时，如 j = i ,实际上是在内存中将 i 的值进行了拷贝。可以通过 &amp;i 获取变量 i 的内存地址</p>
 <p>指针类型：简单地说go语言的指针类型和C/C++的指针类型用法是一样的，除了出去安全性的考虑，go语言增加了一些限制，包括如下几条：</p>
 <p>不同类型的指针不能互相转化，例如<em>int, int32, 以及int64<br>

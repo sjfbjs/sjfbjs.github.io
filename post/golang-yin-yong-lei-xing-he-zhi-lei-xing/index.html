@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang 引用类型和值类型 | 蒜蒜的博客</title>
-<link rel="shortcut icon" href="https://sjfbjs.github.io/favicon.ico?v=1610953647862">
+<link rel="shortcut icon" href="https://sjfbjs.github.io/favicon.ico?v=1610954736302">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://sjfbjs.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="golang 引用类型和值类型 | 蒜蒜的博客 - Atom Feed" href="https://sjfbjs.github.io/atom.xml">
@@ -12,7 +12,8 @@
 
 
     <meta name="description" content="前言
-值类型：所有像int、float、bool和string这些类型都属于值类型，使用这些类型的变量直接指向存在内存中的值，值类型的变量的值存储在栈中。当使用等号=将一个变量的值赋给另一个变量时，如 j = i ,实际上是在内存中将 i ..." />
+结构体的内存地址在使用的过程中是一直不变的 ，可以通过获取 fmt.printf(&quot;地址: %p&quot;,&amp;struct)
+值类型：所有像int、float、bool和string这些类型都属于值类型，使用这些类..." />
     <meta name="keywords" content="golang" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -22,7 +23,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://sjfbjs.github.io">
-  <img class="avatar" src="https://sjfbjs.github.io/images/avatar.png?v=1610953647862" alt="">
+  <img class="avatar" src="https://sjfbjs.github.io/images/avatar.png?v=1610954736302" alt="">
   </a>
   <h1 class="site-title">
     蒜蒜的博客
@@ -100,6 +101,7 @@
             <div class="post-content-wrapper">
               <div class="post-content">
                 <p>前言</p>
+<p>结构体的内存地址在使用的过程中是一直不变的 ，可以通过获取 fmt.printf(&quot;地址: %p&quot;,&amp;struct)</p>
 <p>值类型：所有像int、float、bool和string这些类型都属于值类型，使用这些类型的变量直接指向存在内存中的值，值类型的变量的值存储在栈中。当使用等号=将一个变量的值赋给另一个变量时，如 j = i ,实际上是在内存中将 i 的值进行了拷贝。可以通过 &amp;i 获取变量 i 的内存地址</p>
 <p>指针类型：简单地说go语言的指针类型和C/C++的指针类型用法是一样的，除了出去安全性的考虑，go语言增加了一些限制，包括如下几条：</p>
 <p>不同类型的指针不能互相转化，例如<em>int, int32, 以及int64<br>
