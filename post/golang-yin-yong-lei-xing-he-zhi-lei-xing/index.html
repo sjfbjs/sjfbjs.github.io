@@ -1,0 +1,301 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>golang 引用类型和值类型 | 蒜蒜的博客</title>
+<link rel="shortcut icon" href="https://sjfbjs.github.io/favicon.ico?v=1610953522981">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://sjfbjs.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="golang 引用类型和值类型 | 蒜蒜的博客 - Atom Feed" href="https://sjfbjs.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="前言
+值类型：所有像int、float、bool和string这些类型都属于值类型，使用这些类型的变量直接指向存在内存中的值，值类型的变量的值存储在栈中。当使用等号=将一个变量的值赋给另一个变量时，如 j = i ,实际上是在内存中将 i ..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://sjfbjs.github.io">
+  <img class="avatar" src="https://sjfbjs.github.io/images/avatar.png?v=1610953522981" alt="">
+  </a>
+  <h1 class="site-title">
+    蒜蒜的博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/java" class="menu">
+          java
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/golang" class="menu">
+          golang
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              golang 引用类型和值类型
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-01-18
+              </span>
+              <span>
+                7 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>前言</p>
+<p>值类型：所有像int、float、bool和string这些类型都属于值类型，使用这些类型的变量直接指向存在内存中的值，值类型的变量的值存储在栈中。当使用等号=将一个变量的值赋给另一个变量时，如 j = i ,实际上是在内存中将 i 的值进行了拷贝。可以通过 &amp;i 获取变量 i 的内存地址</p>
+<p>指针类型：简单地说go语言的指针类型和C/C++的指针类型用法是一样的，除了出去安全性的考虑，go语言增加了一些限制，包括如下几条：</p>
+<p>不同类型的指针不能互相转化，例如<em>int, int32, 以及int64<br>
+任何普通指针类型</em>T和uintptr之间不能互相转化<br>
+指针变量不能进行运算, 比如C/C++里面的++, --运算<br>
+下面将给大家详细介绍golang中值类型/指针类型的变量的一些区别，下面话不多说了，来一起看看详细的介绍吧。</p>
+<p>值类型的变量和指针类型的变量</p>
+<p>先声明一个结构体：</p>
+<p>type T struct {<br>
+Name string<br>
+}<br>
+func (t T) M1() {<br>
+t.Name = &quot;name1&quot;<br>
+}<br>
+func (t *T) M2() {<br>
+t.Name = &quot;name2&quot;<br>
+}<br>
+M1() 的接收者是值类型 T, M2() 的接收者是值类型 *T , 两个方法内都是改变Name值。</p>
+<p>下面声明一个 T 类型的变量，并调用 M1() 和 M2() 。</p>
+<p>t1 := T{&quot;t1&quot;}<br>
+fmt.Println(&quot;M1调用前：&quot;, t1.Name)<br>
+t1.M1()<br>
+fmt.Println(&quot;M1调用后：&quot;, t1.Name)<br>
+fmt.Println(&quot;M2调用前：&quot;, t1.Name)<br>
+t1.M2()<br>
+fmt.Println(&quot;M2调用后：&quot;, t1.Name)<br>
+输出结果为：</p>
+<p>M1调用前： t1</p>
+<p>M1调用后： t1</p>
+<p>M2调用前： t1</p>
+<p>M2调用后： name2</p>
+<p>下面猜测一下go会怎么处理。</p>
+<p>先来约定一下：接收者可以看作是函数的第一个参数，即这样的： func M1(t T) , func M2(t *T) 。 go不是面向对象的语言，所以用那种看起来像面向对象的语法来理解可能有偏差。</p>
+<p>当调用 t1.M1() 时相当于 M1(t1) ，实参和行参都是类型 T，可以接受。此时在M1()中的t只是t1的值拷贝，所以M1()的修改影响不到t1。</p>
+<p>当调用 t1.M2() =&gt; M2(t1) ，这是将 T 类型传给了 *T 类型，go可能会取 t1 的地址传进去： M2(&amp;t1) 。所以 M2() 的修改可以影响 t1 。</p>
+<p>类型的变量这两个方法都是拥有的。</p>
+<p>下面声明一个 *T 类型的变量，并调用 M1() 和 M2() 。</p>
+<p>t2 := &amp;T{&quot;t2&quot;}<br>
+fmt.Println(&quot;M1调用前：&quot;, t2.Name)<br>
+t2.M1()<br>
+fmt.Println(&quot;M1调用后：&quot;, t2.Name)<br>
+fmt.Println(&quot;M2调用前：&quot;, t2.Name)<br>
+t2.M2()<br>
+fmt.Println(&quot;M2调用后：&quot;, t2.Name)<br>
+输出结果为：</p>
+<p>M1调用前： t2</p>
+<p>M1调用后： t2</p>
+<p>M2调用前： t2</p>
+<p>M2调用后： name2</p>
+<p>t2.M1() =&gt; M1(t2) ， t2 是指针类型， 取 t2 的值并拷贝一份传给 M1。</p>
+<p>t2.M2() =&gt; M2(t2) ，都是指针类型，不需要转换。</p>
+<p>*T 类型的变量也是拥有这两个方法的。</p>
+<p>传给接口会怎样？</p>
+<p>先声明一个接口</p>
+<p>type Intf interface {<br>
+M1()<br>
+M2()<br>
+}<br>
+使用：</p>
+<p>var t1 T = T{&quot;t1&quot;}<br>
+t1.M1()<br>
+t1.M2()<br>
+var t2 Intf = t1<br>
+t2.M1()<br>
+t2.M2()<br>
+报错：</p>
+<p>./main.go:9: cannot use t1 (type T) as type Intf in assignment:</p>
+<p>T does not implement Intf (M2 method has pointer receiver)<br>
+var t2 Intf = t1 这一行报错。</p>
+<p>t1 是有 M2() 方法的，但是为什么传给 t2 时传不过去呢？</p>
+<p>简单来说，按照接口的理论：传过去【赋值】的对象必须实现了接口要求的方法，而t1没有实现M2() ，t1的指针实现了M2() 。另外和c语言一样，函数名本身就是指针</p>
+<p>当把 var t2 Intf = t1 修改为 var t2 Intf = &amp;t1 时编译通过，此时 t2 获得的是 t1 的地址， t2.M2()的修改可以影响到 t1 了。</p>
+<p>如果声明一个方法 func f(t Intf) , 参数的传递和上面的直接赋值是一样的情况。</p>
+<p>嵌套类型</p>
+<p>声明一个类型 S，将 T 嵌入进去</p>
+<p>type S struct { T }<br>
+使用下面的例子测试一下：</p>
+<p>t1 := T{&quot;t1&quot;}<br>
+s := S{t1}<br>
+fmt.Println(&quot;M1调用前：&quot;, s.Name)<br>
+s.M1()<br>
+fmt.Println(&quot;M1调用后：&quot;, s.Name)<br>
+fmt.Println(&quot;M2调用前：&quot;, s.Name)<br>
+s.M2()<br>
+fmt.Println(&quot;M2调用后：&quot;, s.Name)<br>
+fmt.Println(t1.Name)<br>
+输出：</p>
+<p>M1调用前： t1</p>
+<p>M1调用后： t1</p>
+<p>M2调用前： t1</p>
+<p>M2调用后： name2</p>
+<p>t1</p>
+<p>将 T 嵌入 S， 那么 T 拥有的方法和属性 S 也是拥有的，但是接收者却不是 S 而是 T。</p>
+<p>所以 s.M1() 相当于 M1(t1) 而不是 M1(s) 。</p>
+<p>最后 t1 的值没有改变，因为我们嵌入的是 T 类型，所以 S{t1} 的时候是将 t1 拷贝了一份。</p>
+<p>假如我们将 s 赋值给 Intf 接口会怎么样呢？</p>
+<p>var intf Intf = s<br>
+intf.M1()<br>
+intf.M2()<br>
+报错：</p>
+<p>cannot use s (type S) as type Intf in assignment: S does not implement Intf (M2 method has pointer receiver)</p>
+<p>还是 M2() 的问题，因为 s 此时还是值类型。</p>
+<p>var intf Intf = &amp;s 这样的话编译通过了，如果在 intf.M2() 中改变了 Name 的值， s.Name 被改变了，但是 t1.Name 依然没变，因为现在 t1 和 s 已经没有联系了。</p>
+<p>下面嵌入 *T 试试：</p>
+<p>type S struct { *T }<br>
+使用时这样：</p>
+<p>t1 := T{&quot;t1&quot;}<br>
+s := S{&amp;t1}<br>
+fmt.Println(&quot;M1调用前：&quot;, s.Name)<br>
+s.M1()<br>
+fmt.Println(&quot;M1调用后：&quot;, s.Name)<br>
+fmt.Println(&quot;M2调用前：&quot;, s.Name)<br>
+s.M2()<br>
+fmt.Println(&quot;M2调用后：&quot;, s.Name)<br>
+fmt.Println(t1.Name)<br>
+M1调用前： t1</p>
+<p>M1调用后： t1</p>
+<p>M2调用前： t1</p>
+<p>M2调用后： name2</p>
+<p>name2</p>
+<p>惟一的区别是最后 t1 的值变了，因为我们复制的是指针。</p>
+<p>接着赋值给接口试试：</p>
+<p>var intf Intf = s i<br>
+ntf.M1()<br>
+intf.M2()<br>
+fmt.Println(s.Name)<br>
+编译没有报错。这里我们传递给 intf 的是值类型而不是指针，为什么可以通过呢？</p>
+<p>拷贝 s 的时候里面的 T 是指针类型，所以调用 M2() 的时候传递进去的是一个指针。</p>
+<p>var intf Intf = &amp;s 的效果和上面一样。</p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://sjfbjs.github.io/post/kubernetes-handbook/">
+              <h3 class="post-title">
+                kubernetes handbook
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://sjfbjs.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
